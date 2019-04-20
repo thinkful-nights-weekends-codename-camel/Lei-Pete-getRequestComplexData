@@ -24,17 +24,15 @@ function displayResults(responseJson) {
 
     return (
       `<li><h3>${park.fullName}</h3>
-      <p>${park.description}</p>
-      <a href='${park.url}'>${park.url}</a>
-      <p>${addressLines}
-      ${address.city}, ${address.stateCode} ${address.postalCode}</p>
-      </li>`
+          <p>${park.description}</p>
+          <a href='${park.url}'>${park.url}</a>
+          <p>${addressLines}
+          ${address.city}, ${address.stateCode} ${address.postalCode}</p>
+        </li>`
     );
   });
-  
+    //display the results section  
   $('#results-list').html(toAppend);
-  //display the results section  
-  $('#results').removeClass('hidden');
 };
 
 function getNationalParks(query, maxResults=10) {
