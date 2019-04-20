@@ -11,21 +11,28 @@ function formatQueryParams(params) {
 }
 
 function displayResults(responseJson) {
-  // if there are previous results, remove them
-  console.log(responseJson);
-  $('#results-list').empty();
-  // iterate through the items array
-  for (let i = 0; i < responseJson.data.length; i++){
-    // for each video object in the items 
-    //array, add a list item to the results 
-    //list with the video title, description,
-    //and thumbnail
-    $('#results-list').append(
-      `<li><h3>${responseJson.data[i].fullName}</h3>
-      <p>${responseJson.data[i].description}</p>
-      <a href='${responseJson.data[i].url}'>${responseJson.data[i].url}</a>
+  // iterate through the park data
+  const toAppend = responseJson.data.map(park => {
+    // finding physical address inside park data.address array 
+    const address = park.addresses.find(function(address) {
+      return address.type === 'Physical';
+    });
+    // checking if line1, 2, and 3 contain data or is '' (empty string), adding line break if true
+    const addressLine1 = `${address.line1 ? address.line1 + '<br>' : ''}`;
+    const addressLine2 = `${address.line2 ? address.line2 + '<br>' : ''}`;
+    const addressLines = `${addressLine1} ${addressLine2} ${address.line3}`;
+
+    return (
+      `<li><h3>${park.fullName}</h3>
+      <p>${park.description}</p>
+      <a href='${park.url}'>${park.url}</a>
+      <p>${addressLines}
+      ${address.city}, ${address.stateCode} ${address.postalCode}</p>
       </li>`
-    )};
+    );
+  });
+  
+  $('#results-list').html(toAppend);
   //display the results section  
   $('#results').removeClass('hidden');
 };
@@ -34,6 +41,7 @@ function getNationalParks(query, maxResults=10) {
   const params = {
     api_key: apiKey,
     q: query,
+    fields: 'addresses',
     limit: maxResults
   };
   const queryString = formatQueryParams(params)
