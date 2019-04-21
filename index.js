@@ -25,7 +25,7 @@ function displayResults(responseJson) {
     return (
       `<li><h3>${park.fullName}</h3>
       <p>${park.description}</p>
-      <a href='${park.url}'>${park.url}</a>
+      <a href="${park.url}" target="_blank">${park.url}</a>
       <p>${addressLines}
       ${address.city}, ${address.stateCode} ${address.postalCode}</p>
       </li>`
