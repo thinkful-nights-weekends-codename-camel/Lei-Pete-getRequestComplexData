@@ -37,17 +37,19 @@ function displayResults(responseJson) {
   $('#results').removeClass('hidden');
 };
 
-function getNationalParks(query, maxResults=10) {
+function getNationalParks(stateSearch, maxResults=10) {
+  let stateSearchArray = stateSearch.replace(/\s/g,'').split(',');
   const params = {
     api_key: apiKey,
-    q: query,
+    stateCode: stateSearchArray, // splits search states into array of strings
     fields: 'addresses',
     limit: maxResults
   };
+
   const queryString = formatQueryParams(params)
   const url = searchURL + '?' + queryString;
 
-  console.log(url);
+  // console.log(url);
 
   fetch(url)
     .then(response => {
@@ -65,9 +67,9 @@ function getNationalParks(query, maxResults=10) {
 function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
-    const searchTerm = $('#js-search-term').val();
+    const stateSearch = $('#js-search-term').val();
     const maxResults = $('#js-max-results').val();
-    getNationalParks(searchTerm, maxResults);
+    getNationalParks(stateSearch, maxResults);
   });
 }
 
