@@ -31,10 +31,8 @@ function displayResults(responseJson) {
       </li>`
     );
   });
-  
+    //display the results section  
   $('#results-list').html(toAppend);
-  //display the results section  
-  $('#results').removeClass('hidden');
 };
 
 function getNationalParks(stateSearch, maxResults=10) {
